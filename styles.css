@@ -361,16 +361,27 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
   .nav { gap: 2px 22px; }
   .nav a { font-size: 0.9375rem; padding: 6px 0; }
 
-  .hero { padding-top: 22px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 22px; }
-  .hero-cover { order: -1; max-width: 150px; margin: 0 auto; }
-  .hero-cover img { box-shadow: 0 2px 4px rgba(40, 28, 8, 0.18), 0 16px 24px -14px rgba(60, 40, 10, 0.5); }
-  .hero-copy { padding-bottom: 92px; }
+  /* phones: the real cover sits beside the title, like a book on a shelf card */
+  .hero { padding-top: 20px; }
+  .hero-grid {
+    --m-cover: clamp(96px, 29vw, 120px);
+    grid-template-columns: var(--m-cover) minmax(0, 1fr);
+    grid-template-areas: "eyebrow eyebrow" "cover title" "cover byline" "lede lede" "actions actions";
+    column-gap: 16px; row-gap: 0; align-items: end;
+  }
+  .hero-copy { display: contents; }
+  .hero .eyebrow { grid-area: eyebrow; }
+  .hero-cover { grid-area: cover; max-width: none; margin: 0; align-self: start; }
+  .hero-cover img { box-shadow: 0 2px 4px rgba(40, 28, 8, 0.18), 0 14px 22px -12px rgba(60, 40, 10, 0.5); }
   .horizon { height: 74px; }
-  .eyebrow { font-size: 0.75rem; letter-spacing: 0.16em; margin-bottom: 0.55rem; }
-  .title { font-size: clamp(1.85rem, 8.4vw, 2.2rem); margin-bottom: 0.6rem; }
-  .byline { font-size: 0.9375rem; letter-spacing: 0.26em; margin-bottom: 0.8rem; }
-  .lede { font-size: 1.0625rem; line-height: 1.5; margin-bottom: 1.1rem; }
+  .eyebrow { font-size: 0.75rem; letter-spacing: 0.16em; margin-bottom: 0.7rem; }
+  .title {
+    grid-area: title; align-self: end; margin-bottom: 0.35rem;
+    font-size: min(calc((100vw - 2 * var(--gutter) - var(--m-cover) - 16px) / 6.2), 2.75rem);
+  }
+  .byline { grid-area: byline; align-self: start; font-size: 0.875rem; letter-spacing: 0.22em; margin-bottom: 0; }
+  .lede { grid-area: lede; font-size: 1.0625rem; line-height: 1.5; margin: 1.1rem 0 1.1rem; }
+  .actions { grid-area: actions; padding-bottom: 84px; }
   .actions { gap: 10px 22px; }
   .button { width: 100%; min-height: 52px; padding: 12px 20px; }
 
@@ -394,9 +405,13 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
   .reader { padding: 22px 22px 20px; }
 }
 
+@media (max-width: 420px) {
+  .concept-banner { font-size: 0.6875rem; letter-spacing: 0.1em; }
+}
+
 @media (max-width: 359px) {
   .wordmark { letter-spacing: 0.22em; }
   .nav { gap: 2px 16px; }
-  .title { font-size: 1.75rem; }
+  .byline { font-size: 0.8125rem; letter-spacing: 0.2em; }
   .details { grid-template-columns: 1fr; }
 }
