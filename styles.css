@@ -227,7 +227,7 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
   background: linear-gradient(180deg, var(--sand-1) 0%, #f0e2c6 100%);
 }
 .section-head { max-width: 40rem; margin-bottom: clamp(36px, 5vw, 64px); }
-.section-head h2, .wingman h2, .coda h2 {
+.section-head h2, .film h2, .wingman h2, .coda h2 {
   font-family: var(--display); font-weight: 500; text-transform: uppercase;
   font-size: clamp(2.3rem, 3vw + 1.2rem, 4rem); line-height: 1.02; letter-spacing: 0.005em;
   margin-bottom: 1rem;
@@ -254,7 +254,7 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
   color: var(--ink); margin: 0 0 0.45rem;
 }
 .story-hinge { margin: 0; color: var(--ink-2); font-size: 1.1875rem; line-height: 1.6; max-width: 40em; }
-.story-hinge .and {
+.story-hinge .and, .film-intro .and {
   font-family: var(--script); color: var(--gold-deep);
   font-size: 1.6em; line-height: 0; display: inline-block;
   margin: 0 0.06em; transform: translateY(0.08em);
@@ -290,6 +290,110 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
 }
 .record dt { margin: 0; padding-top: 4px; }
 .record dd { font-size: 1.0625rem; line-height: 1.5; color: var(--ink); }
+
+/* ---------- Meet Tony: the film ---------- */
+/* Day turns to night behind the frame: the biography's paper above, The Wing Man's
+   sky below, so the film sits on the horizon like the cover in the first screen
+   and the reader card in the coda. The night is The Wing Man's own gradient
+   mirrored at the seam, so the two sections meet with no visible join. */
+.film {
+  --film-horizon: 56%;   /* where the night begins, measured down the frame */
+  --gold-light: #d2ad5f; /* the script "and" gold, lifted for the night sky */
+  background: radial-gradient(120% 90% at 85% 100%, var(--night-2) 0%, var(--night-1) 62%, #18122e 100%);
+  padding-bottom: clamp(4px, 1vw, 12px);
+}
+.film-day { background: var(--paper); padding-bottom: clamp(36px, 4.4vw, 60px); }
+.film-head {
+  display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 18px clamp(36px, 6vw, 96px); align-items: end; align-items: last baseline;
+}
+.film h2 { margin-bottom: 0; }
+.film-intro { margin: 0; max-width: 31em; font-size: 1.25rem; line-height: 1.55; color: var(--ink-2); }
+.film-name, .film-keep { white-space: nowrap; }
+
+.film-stage { background: linear-gradient(180deg, var(--paper) 0, var(--paper) var(--film-horizon), transparent var(--film-horizon)); }
+.film-frame {
+  position: relative; isolation: isolate; overflow: hidden;
+  aspect-ratio: 16 / 9; border-radius: 4px;
+  background: radial-gradient(110% 130% at 78% 0%, var(--night-2) 0%, var(--night-1) 64%, #18122e 100%);
+  box-shadow: 0 2px 4px rgba(40, 28, 8, 0.16), 0 44px 70px -36px rgba(24, 18, 46, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+@supports not (aspect-ratio: 1) { .film-frame::before { content: ""; display: block; padding-top: 56.25%; } }
+
+/* if YouTube's still can't load, a quiet title card stands in */
+.film-card {
+  position: absolute; inset: 0; display: grid; place-items: center; padding-left: 0.32em;
+  font-family: var(--meta); font-weight: 600; font-size: clamp(0.8125rem, 0.6vw + 0.6rem, 1.0625rem);
+  letter-spacing: 0.32em; text-transform: uppercase; color: rgba(236, 230, 246, 0.72);
+}
+.film-still {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+  object-fit: cover; /* also trims the bars from YouTube's 4:3 fallback still */
+  transition: transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1), opacity 0.6s ease;
+}
+.film-frame.is-enhanced .film-still:not(.is-loaded) { opacity: 0; }
+.film-frame::after { /* a low scrim so the Play control reads on any frame */
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(0deg, rgba(20, 14, 38, 0.42) 0%, rgba(20, 14, 38, 0.12) 28%, rgba(20, 14, 38, 0) 50%);
+  transition: opacity 0.5s ease;
+}
+
+.film-play {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; align-items: flex-end; justify-content: flex-start;
+  margin: 0; padding: clamp(14px, 2.6vw, 34px); border: 0; border-radius: 0;
+  background: none; color: var(--ink); font: inherit; text-align: left; text-decoration: none;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.5s ease;
+}
+.film-pill {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 7px 24px 7px 7px; border-radius: 999px;
+  background: rgba(250, 245, 234, 0.95); color: var(--ink);
+  font-family: var(--meta); font-weight: 600; font-size: 0.875rem; line-height: 1.2;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  box-shadow: 0 14px 34px -14px rgba(10, 6, 24, 0.75);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.film-play-icon {
+  display: grid; place-items: center; flex: none;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: var(--umbrella); color: #fff;
+  transition: background-color 0.2s ease;
+}
+.film-play-icon svg { width: 22px; height: 22px; fill: currentColor; margin-left: 2px; }
+.film-play:hover .film-pill { background: #fff; transform: translateY(-1px); }
+.film-play:hover .film-play-icon { background: #3d2b70; }
+.film-frame:hover .film-still { transform: scale(1.015); }
+/* focus: a two-tone ring that reads on a bright frame or a dark one */
+.film-play:focus-visible { outline: none; }
+.film-play:focus-visible .film-pill { box-shadow: 0 0 0 3px var(--umbrella), 0 0 0 6px #f6efe0, 0 14px 34px -14px rgba(10, 6, 24, 0.75); }
+
+/* pressed: the still holds until the player has loaded, then gives way */
+.film-frame.is-loading .film-play { cursor: progress; }
+.film-frame.is-playing::after,
+.film-frame.is-playing .film-play,
+.film-frame.is-playing .film-still { opacity: 0; pointer-events: none; }
+.film-player { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; border: 0; background: #000; }
+.film-frame.is-playing .film-player { z-index: 3; }
+
+.film-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; padding-top: clamp(14px, 1.8vw, 22px); }
+.film-link {
+  font-family: var(--meta); font-weight: 600; font-size: 1.0625rem; color: #f6efe0;
+  text-decoration: underline; text-decoration-color: var(--gold-light); text-decoration-thickness: 2px;
+  padding-block: 10px;
+}
+.film-link:hover { color: #fff; text-decoration-color: #fff; }
+.film-link-arrow { display: inline-block; margin-left: 0.3em; text-decoration: none; }
+.film-foot :focus-visible { outline-color: #f6efe0; }
+
+@media (forced-colors: active) {
+  .film-play:focus-visible .film-pill { outline: 3px solid CanvasText; outline-offset: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .film-still, .film-frame::after, .film-play, .film-pill, .film-play-icon { transition: none; }
+  .film-frame:hover .film-still, .film-play:hover .film-pill { transform: none; }
+}
 
 /* ---------- The Wing Man ---------- */
 .wingman {
@@ -350,6 +454,7 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
 @media (max-width: 860px) {
   .book-grid, .author-grid { grid-template-columns: 1fr; }
   .author-head { position: static; }
+  .film-head { grid-template-columns: 1fr; align-items: start; }
   .wingman-grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
 }
 
@@ -397,6 +502,14 @@ p, dd, figcaption, .coda-kicker { text-wrap: pretty; }
   .group-titles { grid-template-columns: 1fr; gap: 6px; }
 
   .record > div { grid-template-columns: 1fr; gap: 2px; padding: 14px 0; }
+
+  .film { --film-horizon: 52%; }
+  .film-intro { font-size: 1.0625rem; line-height: 1.5; }
+  .film-play { padding: 12px; }
+  .film-pill { gap: 9px; padding: 3px 14px 3px 3px; font-size: 0.6875rem; letter-spacing: 0.14em; }
+  .film-play-icon { width: 34px; height: 34px; }
+  .film-play-icon svg { width: 16px; height: 16px; }
+  .film-link { font-size: 1rem; }
 
   .wingman-grid { grid-template-columns: 1fr; gap: 32px; }
   .wingman-cover { max-width: 220px; }
